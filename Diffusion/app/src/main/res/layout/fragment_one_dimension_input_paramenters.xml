@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionInputParamentersFragment">
+
+   <!-- Just include a basic layout for now, TODO update in future -->
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of time steps:"
+        android:id="@+id/timeStepTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="55dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of grid points:"
+        android:id="@+id/gridPointTextView"
+        android:layout_below="@+id/timeStepTextView"
+        android:layout_alignLeft="@+id/timeStepTextView"
+        android:layout_alignStart="@+id/timeStepTextView"
+        android:layout_marginTop="158dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/timeStepEditText"
+        android:layout_alignTop="@+id/timeStepTextView"
+        android:layout_centerHorizontal="true"
+        android:text="1000" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/gridPointEditText"
+        android:layout_alignBottom="@+id/gridPointTextView"
+        android:layout_alignLeft="@+id/timeStepEditText"
+        android:layout_alignStart="@+id/timeStepEditText"
+        android:text="100" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sketch Initial Profile"
+        android:id="@+id/sketch_btn"
+        android:layout_marginTop="180dp"
+        android:layout_below="@+id/gridPointTextView"
+        android:layout_toLeftOf="@+id/gridPointEditText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Animation"
+        android:id="@+id/animate_btn"
+        android:layout_alignTop="@+id/sketch_btn"
+        android:layout_toRightOf="@+id/gridPointEditText"
+        android:onClick="oneDOnClick" />
+
+</RelativeLayout>
