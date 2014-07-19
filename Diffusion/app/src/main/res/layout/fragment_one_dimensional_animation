@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/animation_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:screenOrientation="landscape"
+    tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalAnimationFragment">
+
+    <com.example.diffusion.app.OneDimensionalDiffusion.AnimationView
+        android:id="@+id/animation_view"
+        android:layout_height="403dp"
+        android:layout_width="750dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFFFF" />
+
+    <LinearLayout
+        android:id="@+id/animation_button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+
+
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:text="Restart"
+                android:id="@+id/restart_btn"/>
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:text="Snapshot"
+                android:id="@+id/snapshot_btn"/>
+
+
+        <ToggleButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:textOff="Switch to Lines"
+            android:textOn="Switch to Dots"
+            android:textAlignment="center"
+            android:id="@+id/toggle_lines_animation_btn"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>
+
+
+
+
+
+
+

@@ -1,12 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sketching_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
     tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalSketchingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalSketchAreaView
+    <com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalInitialConcentrationView
         android:id="@+id/drawingView"
         android:layout_width="950dp"
         android:layout_height="fill_parent"
@@ -26,19 +26,39 @@
 
 
         <Button
-            android:layout_width="298dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
             android:text="Refresh"
+            android:textAlignment="center"
             android:id="@+id/refresh_btn"
-            android:onClick="buttonClick"/>
+
+            />
 
         <Button
-            android:layout_width="298dp"
+            android:layout_width="150dp"
             android:layout_height="100dp"
-            android:text="Done"
-            android:id="@+id/done_btn"
-            android:onClick="buttonClick" />
+            android:text="Change Parameters"
+            android:textAlignment="center"
+            android:id="@+id/param_btn"
 
+            />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:text="Animate"
+            android:textAlignment="center"
+            android:id="@+id/animate_btn"
+
+            />
+
+        <ToggleButton
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:textOff="Switch to Lines"
+            android:textOn="Switch to Dots"
+            android:textAlignment="center"
+            android:id="@+id/toggle_lines_btn"/>
 
 
         </LinearLayout>
