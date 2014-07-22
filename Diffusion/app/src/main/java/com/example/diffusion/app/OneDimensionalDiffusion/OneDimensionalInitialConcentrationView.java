@@ -155,18 +155,17 @@ public class OneDimensionalInitialConcentrationView extends View  {
         this.spaceBetweenPoints = sketchCanvas.getWidth()/numberOfGridPoints;
 
         float runningTotal = 0;
+
         //populate the array with data points
-
-
             for (int i = 0; i < dataPointArray.length; i++) {
 
                 dataPointArray[i] = new DataPoints(runningTotal, runningTotal + spaceBetweenPoints);
+                dataPointArray[i].setYPosition((this.getHeight())/2.0f);
 
                 runningTotal += spaceBetweenPoints;
             }//end of for loop
 
             dataPointArrayInitialised = true;
-
 
     }//end of setUpDataPointArray method
 
@@ -179,29 +178,30 @@ public class OneDimensionalInitialConcentrationView extends View  {
         //retrieve the x and y positions of the users touch
         float touchX = event.getX();
         float touchY = event.getY();
+        float minHeight = 0;
+        float maxHeight = this.getHeight();
 
         //determine the type of touch
         switch(action){
+
 
             case MotionEvent.ACTION_DOWN: //finger touching the screen
                 sketchPath.moveTo(touchX, touchY);
 
             case MotionEvent.ACTION_MOVE: //finger moving across the screen
-
+            if(touchY>=minHeight && touchY<=maxHeight) {
                 addToScreen(touchX, touchY);
 
                 //use historical coordinates to fill in gaps
-                for(int j = 0; j < event.getHistorySize(); j++)
-                {
-                    for(int i = 0; i < event.getPointerCount(); i++)
-                    {
+                for (int j = 0; j < event.getHistorySize(); j++) {
+                    for (int i = 0; i < event.getPointerCount(); i++) {
                         float x = event.getHistoricalX(i, j);
                         float y = event.getHistoricalY(i, j);
 
-                        addToScreen(x,y);
+                        addToScreen(x, y);
                     }
                 }//end of for loop for historical coordinates
-
+            }//end if statement for checking input
                 break;
 
             case MotionEvent.ACTION_UP: //finger being lifted from the screen

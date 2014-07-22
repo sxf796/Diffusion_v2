@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-
-
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,21 +13,24 @@ import android.widget.LinearLayout;
 import com.example.diffusion.app.R;
 
 public class OneDimensionalDiffusionActivity extends FragmentActivity
-    implements OneDimensionalSketchingFragment.SketchFragmentListener, OneDimensionInputParamentersFragment.InputParameterListener {
+    implements OneDimensionalSketchingFragment.SketchFragmentListener,
+               InputParametersDialogueFragment.InputDialogueFragmentListener {
 
     private OneDimensionalSketchingFragment sketchingFragment;
-    private OneDimensionInputParamentersFragment inputFragment;
     private OneDimensionalDiffusionModel diffusionModel;
+    private InputParametersDialogueFragment inputParametersDialogueFragment;
+    private InputParametersValues inputParametersValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_one_dimensional_diffusion); //this might need changing
+        setContentView(R.layout.activity_one_dimensional_diffusion);
 
-        //check that a fragment isn't already being used
         if(savedInstanceState==null){
 
             sketchingFragment = new OneDimensionalSketchingFragment();
+            inputParametersValues = new InputParametersValues();
+            inputParametersDialogueFragment = InputParametersDialogueFragment.newInstance(inputParametersValues);
             LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainer);
             LinearLayout ll = new LinearLayout(this); ll.setId(12345);
 
@@ -37,6 +38,9 @@ public class OneDimensionalDiffusionActivity extends FragmentActivity
             fragmentContainer.addView(ll);
 
         }//end of if
+        else{
+            //handle a reload here - to be done this week
+        }//end of else
 
     }//end of onCreate method
 
@@ -68,18 +72,15 @@ public class OneDimensionalDiffusionActivity extends FragmentActivity
      * TODO Change the names of these functions for readability
      */
     @Override
-    public void onButtonClick(int i){
-        switch(i){
+    public void openParameterDialog(){
 
-            case R.id.sketching_fragment: //input parameter button
                 LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainer);
                 LinearLayout ll = new LinearLayout(this); ll.setId(12345);
 
-                getSupportFragmentManager().beginTransaction().replace(ll.getId(), new OneDimensionInputParamentersFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(ll.getId(), inputParametersDialogueFragment).addToBackStack(null).commit();
                 fragmentContainer.addView(ll);
-                break;
 
-        }
+
     }//end of method
 
     /*
@@ -97,7 +98,7 @@ public class OneDimensionalDiffusionActivity extends FragmentActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(ll.getId(), OneDimensionalAnimationFragment.newInstance(initialValues, xValues,
                                                                            sketchAreaHeight, sketchAreaWidth,
-                                                                            linesOn));
+                                                                            linesOn, inputParametersValues));
         ft.addToBackStack(null);
         ft.commit();
         fragmentContainer.addView(ll);
@@ -105,19 +106,23 @@ public class OneDimensionalDiffusionActivity extends FragmentActivity
 
     }//end of animateValues method
 
-    /*
-     * onButtonClick method that gets called from the input parameters fragment
-     */
+    /* Method called when input parameter dialog fragment is clicked */
     @Override
-    public void onButtonClick(int location, int n){
-        switch(location){
-            case R.id.input_fragment:
-                LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainer);
-                LinearLayout ll = new LinearLayout(this); ll.setId(12345);
-                getSupportFragmentManager().beginTransaction().replace(ll.getId(), OneDimensionalSketchingFragment.newInstance(n)).addToBackStack(null).commit();
-                fragmentContainer.addView(ll);
-                break;
-        }//end of switch statement
-    }//end of method
+    public void onCommitChangesClick(InputParametersValues ipv){
+
+        //get the values from the passed ipv
+        inputParametersValues.setNumberOfGridPoints(ipv.getNumberOfGridPoints());
+        inputParametersValues.setBoundaryConditions(ipv.getBoundaryConditions());
+        inputParametersValues.setTemperatureSeekBarValue(ipv.getTemperatureSeekBarValue());
+        inputParametersValues.setDeltaT(ipv.getDeltaT());
+
+        //switch to the input parameter fragment
+        LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainer);
+        LinearLayout ll = new LinearLayout(this); ll.setId(12345);
+        sketchingFragment.setNumberOfGridPoints(inputParametersValues.getNumberOfGridPoints());
+        getSupportFragmentManager().beginTransaction().replace(ll.getId(), sketchingFragment).addToBackStack(null).commit();
+        fragmentContainer.addView(ll);
+
+    }//end of onCommitChangesClick button
 
 }//end of Activity class

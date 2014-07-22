@@ -10,6 +10,8 @@ package com.example.diffusion.app.OneDimensionalDiffusion;
  */
 public class OneDimensionalDiffusionModel {
 
+    private InputParametersValues inputParametersValues; //stores users input parameter values
+
     private int numberOfGridPoints;
     private int totalGridPoints; //this includes the grid points that act as boundaries
     private int numberOfTimeSteps;
@@ -29,12 +31,14 @@ public class OneDimensionalDiffusionModel {
 
 
     /* Constructor */
-    public OneDimensionalDiffusionModel(float[] plottingValues, int animationViewHeight){
+    public OneDimensionalDiffusionModel(float[] plottingValues, int animationViewHeight, InputParametersValues ipv){
 
         //set the parameters manually
-        this.diffusionCoefficient = 0.5;
+        this.diffusionCoefficient = 0.5; //Math.exp((-1)/((ipv.getTemperatureSeekBarValue()*100)+0.01));
 
         this.animationViewHeight = animationViewHeight;
+
+        this.inputParametersValues = ipv;
 
         setDataPointArray(plottingValues);
 
@@ -70,6 +74,7 @@ public class OneDimensionalDiffusionModel {
 
     public float[] getSolutionValues(){return this.solutionValues;}
 
+    /* Helper method for the constructor */
     public void setDataPointArray(float[] plottingValues){
 
         this.plottingValues = plottingValues;
@@ -79,9 +84,9 @@ public class OneDimensionalDiffusionModel {
 
         this.solutionValues = new float[totalGridPoints]; //to include the boundary values
 
-        this.deltaX = 1.0/totalGridPoints; //TODO check whether this needs to be total or number of grid points
+        this.deltaX = 1.0/(numberOfGridPoints-1); //TODO check whether this needs to be total or number of grid points
 
-        this.deltaT = ((deltaX*deltaX)/diffusionCoefficient)*0.95; //add this as an input parameter that can be changed
+        this.deltaT = ((deltaX*deltaX)/(2*diffusionCoefficient))*inputParametersValues.getDeltaT(); //add this as an input parameter that can be changed
 
         //call helper method to set up the arrays
         setUpSolutionArray();
@@ -133,12 +138,13 @@ public class OneDimensionalDiffusionModel {
 
                 pV = solutionValues[i]; //will be used in the next step of the calculation
                 currentValue = solutionValues[i];
-                solutionValues[i] = (float)(((diffusionCoefficient * deltaT)/deltaX) *
+                solutionValues[i] = (float)(((diffusionCoefficient * deltaT)/(deltaX*deltaX)) *
                         (getPreviousValue() + solutionValues[i+1] - (2*currentValue)) + currentValue);
                 setPreviousValue(pV);
             }//end of for loop
 
             updatePlottingValues();
+
 
             this.currentTimeStep++;
 
@@ -153,7 +159,7 @@ public class OneDimensionalDiffusionModel {
 
         for(int i=0; i<plottingValues.length; i++){
 
-            plottingValues[i] = animationViewHeight - solutionValues[i+1]  ; //+ animation view height??????
+            plottingValues[i] = animationViewHeight - solutionValues[i+1]  ;
 
         }//end of for loop
 

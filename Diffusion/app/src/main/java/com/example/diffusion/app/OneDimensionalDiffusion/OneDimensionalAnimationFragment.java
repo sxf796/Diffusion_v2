@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.ToggleButton;
 
 import com.example.diffusion.app.MainActivity;
@@ -29,8 +30,11 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
     private ImageButton mPlayButton, mPauseButton;
     private ToggleButton mLinesToggleButton;
     private LinearLayout buttonLayout;
+    private SeekBar mTemperatureSeekBar;
+    private int temperatureSeekBarValue = 50;//start at 50 for now, get it passed in the future
 
     private OneDimensionalDiffusionModel mDiffusionModel;
+    private InputParametersValues inputParameters;
     private float[] initialValues, xValues, plottingValues;
     private int animationViewHeight, animationViewWidth;
 
@@ -45,12 +49,10 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
 
     public void setPlottingValues(float[] v) { this.plottingValues = v; }
 
-
-
     /* Static method for creating a new instance of the class */
     public static OneDimensionalAnimationFragment newInstance(float[] initialValues, float[] xValues,
                                                               int animationViewHeight, int animationViewWidth,
-                                                                boolean linesOn){
+                                                                boolean linesOn, InputParametersValues ipv){
 
         OneDimensionalAnimationFragment fragment = new OneDimensionalAnimationFragment();
 
@@ -61,6 +63,13 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
         args.putInt("animation_view_height", animationViewHeight);
         args.putInt("animation_view_width", animationViewWidth);
         args.putBoolean("animation_lines_on", linesOn);
+
+
+        //attach the arguments associated with the input parameters
+        args.putString("ipv_boundary_conditions", ipv.getBoundaryConditions());
+        args.putInt("ipv_temperature_seekbar_value", ipv.getTemperatureSeekBarValue());
+        args.putDouble("ipv_delta_T", ipv.getDeltaT());
+
         fragment.setArguments(args);
 
         return fragment;
@@ -76,13 +85,20 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
 
         if(getArguments()!=null) {
 
+            //associated the arguments with the instance variables
             this.initialValues = getArguments().getFloatArray("initial_values");
             setPlottingValues(Arrays.copyOf(initialValues, initialValues.length));
+
             this.xValues = getArguments().getFloatArray("x_values");
             this.animationViewHeight = getArguments().getInt("animation_view_height");
             this.animationViewWidth = getArguments().getInt("animation_view_width");
             this.linesOn = getArguments().getBoolean("animation_lines_on");
             this.animationPlaying = false;
+
+            this.inputParameters = new InputParametersValues();
+            this.inputParameters.setDeltaT(getArguments().getDouble("ipv_delta_T"));
+            this.inputParameters.setBoundaryConditions(getArguments().getString("ipv_boundary_conditions"));
+            this.inputParameters.setTemperatureSeekBarValue(getArguments().getInt("ipv_temperature_seekbar_value"));
 
         }//end of if statement
 
@@ -130,7 +146,26 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
         mLinesToggleButton.setOnClickListener(this);
         mLinesToggleButton.setChecked(linesOn);
 
-        mDiffusionModel = new OneDimensionalDiffusionModel(this.plottingValues, this.animationViewHeight);
+        mDiffusionModel = new OneDimensionalDiffusionModel(this.plottingValues, this.animationViewHeight, this.inputParameters);
+
+        mTemperatureSeekBar = (SeekBar) v.findViewById(R.id.animation_temperature_seek_bar);
+        mTemperatureSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                temperatureSeekBarValue = i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         return v;
 
@@ -196,7 +231,9 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
                             }
                         });
 
-                        handler.postDelayed(this, 1);
+                        int delay = (int)(((100 - (temperatureSeekBarValue))+1)*0.5);
+                        System.out.println("delay: " + delay);
+                        handler.postDelayed(this, delay);
                         break;
 
                 }//end of switch
@@ -205,8 +242,6 @@ public class OneDimensionalAnimationFragment extends Fragment implements View.On
         }//end of run method
 
     }//end of inner PlayThread class
-
-
 
     /* Code which calls the runnable and plays the animation */
     public void playAnimation(){

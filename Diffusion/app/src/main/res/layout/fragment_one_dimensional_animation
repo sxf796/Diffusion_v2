@@ -18,7 +18,7 @@
 
     <LinearLayout
         android:id="@+id/animation_button_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="20dp">
@@ -46,6 +46,26 @@
             android:textOn="Switch to Dots"
             android:textAlignment="center"
             android:id="@+id/toggle_lines_animation_btn"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/temperature_animation_text_view"
+                android:text="Temperature"/>
+
+            <SeekBar
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/animation_temperature_seek_bar"
+                android:progress="50"
+                android:max="100"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>

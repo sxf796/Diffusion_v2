@@ -26,13 +26,13 @@ public class OneDimensionalSketchingFragment extends Fragment implements View.On
     private OneDimensionalInitialConcentrationView mSketchAreaView;
     private Button mRefreshButton, mChangeParametersButton, mAnimateButton;
     private ToggleButton mToggleLinesButton, mInterpolateButton;
-    private int numberOfGridPoints = 20;
+    private int numberOfGridPoints = 75;
     private DataPoints[] dataPointArray; //get this from the view when done is clicked, and pass to the activity,
     private SketchFragmentListener mSketchFragmentListener;
     private boolean linesOn;
 
     public interface SketchFragmentListener {
-        public void onButtonClick(int i); //the int will the R.id value of the fragment it was called from
+        public void openParameterDialog(); //the int will the R.id value of the fragment it was called from
         public void animateValues(float[] initialValues, float[] xValues,
                                   int sketchAreaHeight, int sketchAreaWidth,
                                   boolean linesOn);
@@ -83,8 +83,7 @@ public class OneDimensionalSketchingFragment extends Fragment implements View.On
 
         //TODO change the below, so that the width of the sketching view is a portion of the screen, rather than being predefined
         mSketchAreaView.getLayoutParams().width = ((int)(750/this.numberOfGridPoints))*this.numberOfGridPoints;
-        mSketchAreaView.setNumberOfGridPoints(this.numberOfGridPoints); //this might throw null pointer exceptions
-
+        mSketchAreaView.setNumberOfGridPoints(this.numberOfGridPoints);
 
         mRefreshButton = (Button) v.findViewById(R.id.refresh_btn);
         mRefreshButton.setOnClickListener(this);
@@ -131,8 +130,8 @@ public class OneDimensionalSketchingFragment extends Fragment implements View.On
                                                         linesOn);
                 break;
 
-            case R.id.param_btn:
-                mSketchFragmentListener.onButtonClick(R.id.sketching_fragment);
+            case R.id.param_btn: //open up the parameter dialogue fragment from the activity
+                mSketchFragmentListener.openParameterDialog();
                 break;
 
             case R.id.toggle_lines_btn:
@@ -145,6 +144,12 @@ public class OneDimensionalSketchingFragment extends Fragment implements View.On
         }//end of switch statement
     }
 
+    /* Getters/Setters */
     public DataPoints[] getDataPointArray(){return this.dataPointArray;}
+
+    public void setNumberOfGridPoints(int n){
+        this.numberOfGridPoints = n;
+        mSketchAreaView.setNumberOfGridPoints(n);
+    }
 
 }//end of Fragment class

@@ -222,6 +222,7 @@ public class AnimationView extends View {
 
         snapshotValues.add(new SnapShotValues(plottingValues.clone(), color));
         numberOfSnapShots++;
+        invalidate();
 
     }//end of snapShotTaken method
 
