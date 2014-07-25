@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalAnimationFragment">
+    tools:context="com.example.diffusion.app.FreeFormDiffusion.OneDimensionalAnimationFragment">
 
-    <com.example.diffusion.app.OneDimensionalDiffusion.AnimationView
+    <com.example.diffusion.app.FreeFormDiffusion.AnimationView
         android:id="@+id/animation_view"
         android:layout_height="403dp"
         android:layout_width="750dp"
@@ -65,23 +65,32 @@
                 android:progress="50"
                 android:max="100"/>
 
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:text="Save Data"
+                android:id="@+id/save_data_btn"/>
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:text="See Saved"
+                android:id="@+id/get_saved_btn"/>
+
+
+        </LinearLayout>
+
         </LinearLayout>
 
 
-    </LinearLayout>
 
 
-
-
-
-
-
-
-</LinearLayout>
-
-
-
-
-
+ </LinearLayout>
 
 

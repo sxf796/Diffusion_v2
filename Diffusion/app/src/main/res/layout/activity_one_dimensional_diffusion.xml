@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:screenOrientation="landscape"
     android:id="@+id/oneD_activity_layout"
-    tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalDiffusionActivity">
+    tools:context="com.example.diffusion.app.FreeFormDiffusion.OneDimensionalDiffusionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

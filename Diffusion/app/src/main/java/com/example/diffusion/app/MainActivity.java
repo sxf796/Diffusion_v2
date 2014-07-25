@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalDiffusionActivity;
+import com.example.diffusion.app.FreeFormDiffusion.OneDimensionalDiffusionActivity;
 
 
 public class MainActivity extends Activity implements View.OnClickListener{

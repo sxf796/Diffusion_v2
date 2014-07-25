@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OneDimensionalDiffusion.OneDimensionalDiffusionActivity"
+            android:name=".FreeFormDiffusion.OneDimensionalDiffusionActivity"
             android:label="@string/title_activity_one_dimensional_diffusion"
             android:screenOrientation="landscape">
         </activity>

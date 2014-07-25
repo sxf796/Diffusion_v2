@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context="com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalSketchingFragment">
+    tools:context="com.example.diffusion.app.FreeFormDiffusion.OneDimensionalSketchingFragment">
 
-    <com.example.diffusion.app.OneDimensionalDiffusion.OneDimensionalInitialConcentrationView
+    <com.example.diffusion.app.FreeFormDiffusion.OneDimensionalInitialConcentrationView
         android:id="@+id/drawingView"
         android:layout_width="950dp"
         android:layout_height="fill_parent"
@@ -60,6 +60,12 @@
             android:textAlignment="center"
             android:id="@+id/toggle_lines_btn"/>
 
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:text="Load Previous"
+            android:id="@+id/load_previous_btn"/>
 
         </LinearLayout>
 
