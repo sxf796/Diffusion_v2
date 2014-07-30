@@ -9,15 +9,14 @@
     android:orientation="vertical"
     android:screenOrientation="landscape"
     android:id="@+id/oneD_activity_layout"
-    tools:context="com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalDiffusionActivity">
+    tools:context="com.example.diffusion.app.FreeFormTernaryDiffusion.TernaryFreeFormActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragContainer"
+        android:id="@+id/fragContainerTernary"
         android:orientation="horizontal">
 
     </LinearLayout>
-
 
 </LinearLayout>

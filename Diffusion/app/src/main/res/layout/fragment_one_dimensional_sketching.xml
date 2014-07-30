@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context="com.example.diffusion.app.FreeFormDiffusion.OneDimensionalSketchingFragment">
+    tools:context="com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalSketchingFragment">
 
-    <com.example.diffusion.app.FreeFormDiffusion.OneDimensionalInitialConcentrationView
+    <com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalInitialConcentrationView
         android:id="@+id/drawingView"
         android:layout_width="950dp"
         android:layout_height="fill_parent"
@@ -34,14 +34,25 @@
 
             />
 
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:text="Change Parameters"
-            android:textAlignment="center"
-            android:id="@+id/param_btn"
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
 
-            />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="GP:"/>
+
+           <EditText
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="20"
+               android:inputType="number"
+               android:id="@+id/grid_point_edit_text_view"/>
+
+       </LinearLayout>
+
 
         <Button
             android:layout_width="150dp"

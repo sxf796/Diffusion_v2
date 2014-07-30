@@ -9,24 +9,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.diffusion.app.FreeFormDiffusion.OneDimensionalDiffusionActivity;
+import com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalDiffusionActivity;
+import com.example.diffusion.app.FreeFormTernaryDiffusion.TernaryFreeFormActivity;
 
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
     /* Instance Variables */
     private TextView homeScreenTextView;
-    private Button oneDimensionButton;
+    private Button binaryDiffusionButton, ternaryDiffusionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //instantiate the instance variables
         homeScreenTextView = (TextView) findViewById(R.id.homeScreenTextView);
-        oneDimensionButton = (Button) findViewById(R.id.oneDButton);
-        oneDimensionButton.setOnClickListener(this);
+
+        binaryDiffusionButton = (Button) findViewById(R.id.binary_difF_btn);
+        binaryDiffusionButton.setOnClickListener(this);
+
+        ternaryDiffusionButton = (Button) findViewById(R.id.ternary_diff_btn);
+        ternaryDiffusionButton.setOnClickListener(this);
+
     }//end of onCreate method
 
 
@@ -36,6 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+
     }//end of onCreateOptionsMenu method
 
     @Override
@@ -53,15 +61,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v){
 
-        if(v.getId()==R.id.oneDButton){
-            //if one dimension is selected, start the activity to do with one dimension
-            Intent intent = new Intent(this, OneDimensionalDiffusionActivity.class);
-            startActivity(intent);
+        switch(v.getId()){
 
-        }//end of if one d button
+            case R.id.binary_difF_btn:
+                Intent intent1 = new Intent(this, OneDimensionalDiffusionActivity.class);
+                startActivity(intent1);
+                break;
 
-        //button for the additional options goes here
+            case R.id.ternary_diff_btn:
+                Intent intent2 = new Intent(this, TernaryFreeFormActivity.class);
+                startActivity(intent2);
+                break;
 
+        }//end of switch statement
 
     }//end of onClick method
 

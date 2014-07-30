@@ -6,17 +6,18 @@
     <string name="action_settings">Settings</string>
     <string name="one_d_button">One Dimension</string>
     <string name="title_activity_one_dimensional_diffusion">OneDimensionalDiffusionActivity</string>
+    <string name="binary_diff_button">Binary Diffusion</string>
+    <string name="ternary_diffusion_button">Ternary Diffusion</string>
     <string name="hello_world">Hello world!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="boundary_conditions_array">
-
         <item>Zero Flux</item>
         <item>Constant Value</item>
         <item>Reflective</item>
-
     </string-array>
 
     <string name="boundary_prompt">Choose a Boundary Condition</string>
+    <string name="title_activity_ternary_free_form">TernaryFreeFormActivity</string>
 
 </resources>

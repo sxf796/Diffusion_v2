@@ -17,8 +17,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FreeFormDiffusion.OneDimensionalDiffusionActivity"
+            android:name="com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalDiffusionActivity"
             android:label="@string/title_activity_one_dimensional_diffusion"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.example.diffusion.app.FreeFormTernaryDiffusion.TernaryFreeFormActivity"
+            android:label="@string/title_activity_ternary_free_form"
             android:screenOrientation="landscape">
         </activity>
     </application>
