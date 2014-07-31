@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalDiffusionActivity;
+import com.example.diffusion.app.FreeFormBinaryDiffusion.FreeFormBinaryActivity;
 import com.example.diffusion.app.FreeFormTernaryDiffusion.TernaryFreeFormActivity;
 
 
@@ -64,7 +64,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch(v.getId()){
 
             case R.id.binary_difF_btn:
-                Intent intent1 = new Intent(this, OneDimensionalDiffusionActivity.class);
+                Intent intent1 = new Intent(this, FreeFormBinaryActivity.class);
                 startActivity(intent1);
                 break;
 

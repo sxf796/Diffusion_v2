@@ -1,13 +1,11 @@
 package com.example.diffusion.app.FreeFormTernaryDiffusion;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import com.example.diffusion.app.FreeFormBinaryDiffusion.InputParametersDialogueFragment;
 import com.example.diffusion.app.R;
 
 /*

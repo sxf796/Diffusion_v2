@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context="com.example.diffusion.app.FreeFormBinaryDiffusion.OneDimensionalAnimationFragment">
+    tools:context="com.example.diffusion.app.FreeFormBinaryDiffusion.FreeFormBinaryAnimationFragment">
 
     <com.example.diffusion.app.FreeFormBinaryDiffusion.AnimationView
         android:id="@+id/animation_view"

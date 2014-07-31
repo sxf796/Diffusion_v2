@@ -14,7 +14,7 @@
     <string-array name="boundary_conditions_array">
         <item>Zero Flux</item>
         <item>Constant Value</item>
-        <item>Reflective</item>
+        <item>Periodic</item>
     </string-array>
 
     <string name="boundary_prompt">Choose a Boundary Condition</string>
