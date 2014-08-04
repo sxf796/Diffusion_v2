@@ -131,14 +131,12 @@ public class FreeFormBinaryActivity extends FragmentActivity
 
     }//end of loadAnimationFragment
 
-//    @Override
-//    public boolean onKeyPressed(int keyCode, KeyEvent event){
-//        if(keyCode==KeyEvent.KEYCODE_BACK){
-//            if(getSupportFragmentManager().findFragmentByTag("ANIMATION_FRAGMENT_TAG").isVisible()){
-//
-//            }//end of inner if
-//        }//end of outer if
-//    }
+    /* Test method for adding things to the action bar */
+    public void setUpActionBar(){
+
+
+
+    }//end of setUpActionBar method
 
 }//end of Activity class
 

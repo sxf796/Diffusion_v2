@@ -1,7 +1,6 @@
 package com.example.diffusion.app.FreeFormBinaryDiffusion;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,8 +11,10 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,7 +49,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class which handles the animations of the diffusion activity
@@ -59,7 +59,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
     /* Instance Variables */
     private AnimationView mAnimationView;
-    private Button mRestartButton, mSnapShotButton, mSaveDataButton, mChangeParameters, mCreateGfycatButton, mFinishGfyButton;
+    private Button mRestartButton, mSnapShotButton, mSaveDataButton, mChangeParameters, mCreateGifButton;
     private ImageButton mPlayButton, mPauseButton;
     private ToggleButton mLinesToggleButton;
     private LinearLayout buttonLayout;
@@ -83,7 +83,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
     private double deltaTFactor;
 
     private ArrayList<Bitmap> bitmapArrayList;
-    private boolean creatingGfycatLink;
+    private boolean creatingGif;
 
     /* Getters/Setters */
     public int getPlaying(){return this.playing;}
@@ -135,11 +135,70 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
             this.boundaryConditionsArray.add("Constant Value"); this.boundaryConditionsArray.add("Zero Flux");
             this.boundaryConditionsArray.add("Periodic"); this.positionInBCArray = 0;
             this.bitmapArrayList = new ArrayList<Bitmap>();
-            this.creatingGfycatLink = false;
+            this.creatingGif = false;
+            //test code below for moving functionality to the action bar
+            setHasOptionsMenu(true);
 
         }//end of if statement
 
+        else{
+            //use for reloading in here
+        }
+
     }//end of onCreate method
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
+
+        menuInflater.inflate(R.menu.binary_animation_menu, menu);
+
+    }//end of onCreateOptionsMenu method
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+
+        switch(menuItem.getItemId()){
+
+            case R.id.action_create_gif:
+                if(!creatingGif){
+                    createGif();
+                    return true;
+                }else{
+                    finishGif();
+                    return true;
+                }
+
+            case R.id.action_change_deltaT:
+                changeParameters();
+                return true;
+
+
+            case R.id.action_restart_animation:
+                restartAnimation();
+                return true;
+
+
+            case R.id.action_save_data:
+                saveCurrentData();
+                return true;
+
+
+            case R.id.action_snapshot:
+                mAnimationView.createSnapShot();
+                return true;
+
+            case R.id.action_switch_to_lines:
+                if(linesOn) linesOn = false;
+                else linesOn = true;
+                mAnimationView.setLinesOn(linesOn);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }//end of switch statement
+
+    }//end of method
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -156,7 +215,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
         mAnimationView.setXValues(this.xValues);
         mAnimationView.setLinesOn(this.linesOn);
 
-        buttonLayout = (LinearLayout) v.findViewById(R.id.animation_button_layout);
+        buttonLayout = (LinearLayout) v.findViewById(R.id.animation_play_button_layout);
 
         mPlayButton = new ImageButton(this.getActivity());
         mPlayButton.setImageResource(R.drawable.play_button);
@@ -170,27 +229,10 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
         mPauseButton.setId(54321);
         mPauseButton.setOnClickListener(this);
 
-
-        mCreateGfycatButton = new Button(this.getActivity());
-        mCreateGfycatButton.setId(741);
-        mCreateGfycatButton.setText("Create Gif");
-        mCreateGfycatButton.setOnClickListener(this);
-        buttonLayout.addView(mCreateGfycatButton);
-
-
-
         buttonLayout.addView(mPauseButton);
         mPauseButton.setVisibility(View.GONE);
 
-        mRestartButton = (Button) v.findViewById(R.id.restart_btn);
-        mRestartButton.setOnClickListener(this);
 
-        mSnapShotButton = (Button) v.findViewById(R.id.snapshot_btn);
-        mSnapShotButton.setOnClickListener(this);
-
-        mLinesToggleButton = (ToggleButton) v.findViewById(R.id.toggle_lines_animation_btn);
-        mLinesToggleButton.setOnClickListener(this);
-        mLinesToggleButton.setChecked(linesOn);
 
         mDiffusionModel = new FreeFormBinaryModel(this.plottingValues, this.animationViewHeight, boundaryConditions, deltaTFactor);
 
@@ -210,11 +252,9 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
         });
 
-        mSaveDataButton = (Button) v.findViewById(R.id.save_data_btn);
-        mSaveDataButton.setOnClickListener(this);
+        mTemperatureSeekBar.setRotation(270);
 
-        mChangeParameters = (Button) v.findViewById(R.id.change_parameters_btn);
-        mChangeParameters.setOnClickListener(this);
+
 
         return v;
 
@@ -231,40 +271,6 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
             case 54321: //pause button
                 pauseAnimation();
-                break;
-
-            case R.id.restart_btn:
-                restartAnimation();
-                break;
-
-            case R.id.snapshot_btn:
-                mAnimationView.createSnapShot();
-                addSnapShotToTextView();
-                break;
-
-            case R.id.toggle_lines_animation_btn:
-                if(linesOn){
-                    linesOn = false;
-                }else if(!linesOn){
-                    linesOn = true;
-                }
-                mAnimationView.setLinesOn(linesOn);
-                break;
-
-            case R.id.save_data_btn:
-                saveCurrentData();
-                break;
-
-            case R.id.change_parameters_btn:
-                changeParameters();
-                break;
-
-            case 741:
-                createGfycatLink();
-                break;
-
-            case 147: //might not need this anymore i dont think
-                finishCreatingGfycatLink();
                 break;
 
         }//end of switch statement
@@ -539,12 +545,11 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
      *     which details how to create the gif file
      *    Code which creates the gif on a thread written by myself
      */
-    public void createGfycatLink(){
+    public void createGif(){
 
         System.out.println("starting gif");
-        mCreateGfycatButton.setText("Finish Gif");
-        mCreateGfycatButton.setId(147);
-        creatingGfycatLink = true;
+
+        creatingGif = true;
 
         final AlertDialog.Builder nameDialogue= new AlertDialog.Builder(this.getActivity());
         nameDialogue.setTitle("Create Gif");
@@ -563,7 +568,6 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
                 gifThread = new GifThread();
                 gifThread.start();
 
-
             }//end of onClick method
         });
 
@@ -571,8 +575,8 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                mCreateGfycatButton.setText("Create Gif");
-                mCreateGfycatButton.setId(741);
+                mCreateGifButton.setText("Create Gif");
+                mCreateGifButton.setId(741);
 
             }
         });
@@ -585,12 +589,11 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
      * Creates a gif and stores it to the device, and offers the option of creating a gfycat link
      *  help from: http://stackoverflow.com/questions/2801116/converting-a-view-to-bitmap-without-displaying-it-in-android
      */
-    public void finishCreatingGfycatLink(){
+    public void finishGif(){
 
         System.out.println("finish gif");
-        mCreateGfycatButton.setText("Create Gfycat");
-        mCreateGfycatButton.setId(741);
-        creatingGfycatLink = false;
+
+        creatingGif = false;
 
         final byte[] byteArray = gifThread.returnByteArray(); //the problem might be here, so i can try moving this around if i need to
         gifThread = null; //ready for garbage collection
@@ -609,29 +612,30 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
             System.out.println("the try block has been finished");
         }catch (Exception e){
             System.out.println("exception: " + e);
-        }
+        }//end of try/catch block
 
-        AlertDialog.Builder gfycatBuilder = new AlertDialog.Builder(this.getActivity());
-        gfycatBuilder.setTitle("Gif Created");
-        gfycatBuilder.setMessage("Do you want to generate a Gfycat link?");
-        gfycatBuilder.setPositiveButton("Generate", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-             GenerateGfycatLinkThread gThread = new GenerateGfycatLinkThread(byteArray);
-             gThread.start();
-
-            }//end of onClick method
-        });
-
-        gfycatBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //option to open the gif in here
-            }
-        });
-
-        gfycatBuilder.show();
+        /* Code for creating gfycat link below - come back to in the future */
+//        AlertDialog.Builder gfycatBuilder = new AlertDialog.Builder(this.getActivity());
+//        gfycatBuilder.setTitle("Gif Created");
+//        gfycatBuilder.setMessage("Do you want to generate a Gfycat link?");
+//        gfycatBuilder.setPositiveButton("Generate", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//             GenerateGfycatLinkThread gThread = new GenerateGfycatLinkThread(byteArray);
+//             gThread.start();
+//
+//            }//end of onClick method
+//        });
+//
+//        gfycatBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                //option to open the gif in here
+//            }
+//        });
+//
+//        gfycatBuilder.show();
     }//end of finishCreatingGfycatLink method
 
     class GenerateGfycatLinkThread extends Thread{
@@ -693,7 +697,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
         public void run() {
 
-            if(creatingGfycatLink) {//rename this file
+            if(creatingGif) {//rename this file
                 if(!gifEncoderStarted){
                     animatedGifEncoder.start(byteArrayOutputStream);
                     gifEncoderStarted = true;
