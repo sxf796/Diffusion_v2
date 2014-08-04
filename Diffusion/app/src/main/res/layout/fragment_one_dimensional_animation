@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/animation_button_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         android:layout_marginTop="20dp">
 
@@ -28,20 +28,20 @@
 
             <Button
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="75dp"
                 android:text="Restart"
                 android:id="@+id/restart_btn"/>
 
             <Button
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="75dp"
                 android:text="Snapshot"
                 android:id="@+id/snapshot_btn"/>
 
 
         <ToggleButton
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:textOff="Switch to Lines"
             android:textOn="Switch to Dots"
             android:textAlignment="center"

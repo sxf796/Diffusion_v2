@@ -115,6 +115,10 @@ public class AnimationView extends View {
         return this.snapshotValues.get(snapshotValues.size()-1);
     }
 
+    public Bitmap getCanvasBitmap(){  //it might be that the bitmap is blank - need to
+        return canvasBitmap;
+    }
+
     /* ++++++++++++++++++++++++++++++++++++++++++++ */
 
     /* Override Methods for the View Class */
@@ -135,19 +139,21 @@ public class AnimationView extends View {
 
     @Override
     public void onDraw(Canvas canvas){
+        canvasBitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888); //see what effect this has
+        sketchCanvas = new Canvas(canvasBitmap);
 
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(sketchPath, sketchPaint);
 
         //for loop plots the grid lines onto the graph area
-        for (int i = 0; i < canvas.getWidth(); i += (canvas.getWidth() / plottingValues.length)) { //change this to delta x at some point in the future
-            canvas.drawLine(i, 0, i, canvas.getHeight(), linePaint); //changed that to see the effect it has
-        }//end of for  loop
+//        for (int i = 0; i < canvas.getWidth(); i += (canvas.getWidth() / plottingValues.length)) { //change this to delta x at some point in the future
+//            canvas.drawLine(i, 0, i, canvas.getHeight(), linePaint); //changed that to see the effect it has
+//        }//end of for  loop
 
       if(!linesOn){
           //test drawing the points
           for(int i=0; i<plottingValues.length; i++){
-              sketchCanvas.drawPoint(xValues[i], plottingValues[i], sketchPaint);
+              canvas.drawPoint(xValues[i], plottingValues[i], sketchPaint);
           }
 
           if(snapShotTaken){
@@ -159,7 +165,7 @@ public class AnimationView extends View {
                   sketchPaint.setStrokeWidth(snapshotSize);
 
                   for(int j=0; j<ssv.size(); j++){
-                      sketchCanvas.drawPoint(xValues[j], ssv.getSnapshotValues()[j], sketchPaint);
+                      canvas.drawPoint(xValues[j], ssv.getSnapshotValues()[j], sketchPaint);
                   }//end of inner for loop
 
               }//end of for loop
@@ -174,7 +180,7 @@ public class AnimationView extends View {
         else if(linesOn){
 
           for(int i=1; i<plottingValues.length; i++){
-              sketchCanvas.drawLine(
+              canvas.drawLine(
                       xValues[i-1], plottingValues[i-1],
                       xValues[i], plottingValues[i], sketchPaint
               );
@@ -188,7 +194,7 @@ public class AnimationView extends View {
                   sketchPaint.setStrokeWidth(snapshotSize);
 
                   for(int j=1; j<ssv.size(); j++){
-                      sketchCanvas.drawLine(
+                      canvas.drawLine(
                               xValues[j-1], ssv.getSnapshotValues()[j-1],
                               xValues[j], ssv.getSnapshotValues()[j], sketchPaint
                       );
@@ -201,6 +207,7 @@ public class AnimationView extends View {
 
 
       }//end of if/else block
+
 
     }//end of onDraw method
 
