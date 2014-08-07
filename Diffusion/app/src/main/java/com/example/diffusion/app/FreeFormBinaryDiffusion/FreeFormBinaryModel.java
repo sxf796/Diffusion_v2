@@ -234,6 +234,6 @@ public class FreeFormBinaryModel {
         this.currentTimeStep = 0;
         setUpSolutionArray();
 
-    }
+    }//end of restartAnimation method
 
 }//end of Model class

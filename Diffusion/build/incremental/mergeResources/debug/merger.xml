@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res" >
+            <file
+                name="blue_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\blue_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="deltat_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\deltat_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="gif_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\gif_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="pause_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\pause_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\play_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="red_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\red_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="refresh_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\refresh_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="save"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\save.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="snapshot_button"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable\snapshot_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\drawable-xxhdpi\ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="activity_main"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_one_dimensional_diffusion"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\activity_one_dimensional_diffusion.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_ternary_free_form"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\activity_ternary_free_form.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_input_parameters"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\fragment_input_parameters.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_one_dimensional_animation"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\fragment_one_dimensional_animation.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_one_dimensional_sketching"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\fragment_one_dimensional_sketching.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_ternary_sketching"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\fragment_ternary_sketching.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="parameter_dialogue"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\layout\parameter_dialogue.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="binary_animation_menu"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\menu\binary_animation_menu.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="main"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\menu\main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="one_dimensional_diffusion"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\menu\one_dimensional_diffusion.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="ternary_free_form"
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\menu\ternary_free_form.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\values\dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\values\strings.xml"
+                qualifiers="" >
+                <string name="action_settings" >Settings
+                </string>
+                <string name="title_activity_ternary_free_form" >TernaryFreeFormActivity
+                </string>
+                <string name="hello_blank_fragment" >Hello blank fragment
+                </string>
+
+                <string-array name="boundary_conditions_array" >
+                    <item>
+Zero Flux
+                    </item>
+                    <item>
+Constant Value
+                    </item>
+                    <item>
+Periodic
+                    </item>
+                </string-array>
+
+                <string name="ternary_diffusion_button" >Ternary Diffusion
+                </string>
+                <string name="binary_diff_button" >Binary Diffusion
+                </string>
+                <string name="title_activity_one_dimensional_diffusion" >OneDimensionalDiffusionActivity
+                </string>
+                <string name="home_screen_welcome" >Welcome to the Diffusion App\nPlease Select an Option
+                </string>
+                <string name="app_name" >Diffusion
+                </string>
+                <string name="boundary_prompt" >Choose a Boundary Condition
+                </string>
+                <string name="hello_world" >Hello world!
+                </string>
+                <string name="one_d_button" >One Dimension
+                </string>
+            </file>
+            <file
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\values\styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="AppTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- Customize your theme here. -->
+                </style>
+            </file>
+            <file
+                path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\main\res\values-w820dp\dimens.xml"
+                qualifiers="w820dp" >
+                <dimen name="activity_horizontal_margin" >64dp
+                </dimen>
+            </file>
+        </source>
+        <source path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\build\res\rs\debug" />
+        <source path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\build\res\generated\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\Sam\AndroidStudioProjects\Diffusion\app\src\debug\res" />
+    </dataSet>
+
+</merger>

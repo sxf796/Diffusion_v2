@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,7 +61,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
     /* Instance Variables */
     private AnimationView mAnimationView;
-    private Button mRestartButton, mSnapShotButton, mSaveDataButton, mChangeParameters, mCreateGifButton;
+    private Button  mSnapShotButton;
     private ImageButton mPlayButton, mPauseButton;
     private ToggleButton mLinesToggleButton;
     private LinearLayout buttonLayout;
@@ -89,6 +91,9 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
     public int getPlaying(){return this.playing;}
 
     public void setPlottingValues(float[] v) { this.plottingValues = v; }
+
+    private RadioGroup mBoundaryGroup;
+
 
     /* Static method for creating a new instance of the class */
     public static FreeFormBinaryAnimationFragment newInstance(float[] initialValues, float[] xValues,
@@ -184,7 +189,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
 
             case R.id.action_snapshot:
-                mAnimationView.createSnapShot();
+                saveCurrentAnimationView();
                 return true;
 
             case R.id.action_switch_to_lines:
@@ -232,7 +237,11 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
         buttonLayout.addView(mPauseButton);
         mPauseButton.setVisibility(View.GONE);
 
-
+        mSnapShotButton = new Button(this.getActivity());
+        mSnapShotButton.setText("Snapshot");
+        mSnapShotButton.setOnClickListener(this);
+        mSnapShotButton.setId(89);
+        buttonLayout.addView(mSnapShotButton);
 
         mDiffusionModel = new FreeFormBinaryModel(this.plottingValues, this.animationViewHeight, boundaryConditions, deltaTFactor);
 
@@ -255,6 +264,28 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
         mTemperatureSeekBar.setRotation(270);
 
 
+        mBoundaryGroup = (RadioGroup) v.findViewById(R.id.boundary_condition_radio_group);
+        mBoundaryGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radio_boundary_constant:
+                        mDiffusionModel.setBoundaryConditions("Constant Value");
+                        restartAnimation();
+                        break;
+
+                    case R.id.radio_boundary_periodic:
+                        mDiffusionModel.setBoundaryConditions("Periodic");
+                        restartAnimation();
+                        break;
+
+                    case R.id.radio_boundary_zero:
+                        mDiffusionModel.setBoundaryConditions("Zero Flux");
+                        restartAnimation();
+                        break;
+                }
+            }
+        });
 
         return v;
 
@@ -271,6 +302,10 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
             case 54321: //pause button
                 pauseAnimation();
+                break;
+
+            case 89:
+                mAnimationView.createSnapShot();
                 break;
 
         }//end of switch statement
@@ -553,7 +588,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 
         final AlertDialog.Builder nameDialogue= new AlertDialog.Builder(this.getActivity());
         nameDialogue.setTitle("Create Gif");
-        nameDialogue.setMessage("Enter name:");
+        nameDialogue.setMessage("Enter Gif Name:");
         final EditText et = new EditText(this.getActivity());
         et.setInputType(InputType.TYPE_CLASS_TEXT);
         nameDialogue.setView(et);
@@ -575,8 +610,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                mCreateGifButton.setText("Create Gif");
-                mCreateGifButton.setId(741);
+
 
             }
         });
@@ -727,5 +761,55 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
     }
 
     }//end of GifThread class
+
+    public void saveCurrentAnimationView(){
+
+        final AlertDialog.Builder nameDialogue= new AlertDialog.Builder(this.getActivity());
+        nameDialogue.setTitle("Save Snapshot");
+        nameDialogue.setMessage("Enter Image Name:");
+        final EditText et = new EditText(this.getActivity());
+        et.setInputType(InputType.TYPE_CLASS_TEXT);
+        nameDialogue.setView(et);
+        nameDialogue.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                filename = et.getText().toString();
+                filename = filename + ".png";
+                Bitmap b = Bitmap.createBitmap(mAnimationView.getWidth(), mAnimationView.getHeight(), Bitmap.Config.ARGB_8888); //might have to make a copy of this, not sure
+                Canvas c = new Canvas(b);
+                mAnimationView.layout(mAnimationView.getLeft(), mAnimationView.getTop(), mAnimationView.getRight(), mAnimationView.getBottom());
+                mAnimationView.draw(c);
+
+                FileOutputStream outputStream = null;
+                try{ //the below will need modifying but stick with it for now
+                    File f = Environment.getExternalStorageDirectory();
+                    File directory = new File(f.getAbsolutePath() + "/picdir");
+                    directory.mkdirs();
+                    File file = new File(directory, filename);
+                    outputStream = new FileOutputStream(file);
+                    b.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.close();
+                    System.out.println("the try block has been finished");
+                }catch (Exception e){
+                    System.out.println("exception: " + e);
+                }//end of try/catch block
+
+                //get a copy of the image from the view
+
+
+            }//end of onClick method
+        });
+
+        nameDialogue.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        nameDialogue.show();
+
+
+    }//end of saveCurrentAnimationView
+
 
 }//end of animation fragment class
