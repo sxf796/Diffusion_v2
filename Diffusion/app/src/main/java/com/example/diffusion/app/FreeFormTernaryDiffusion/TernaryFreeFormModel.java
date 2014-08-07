@@ -115,6 +115,14 @@ public class TernaryFreeFormModel {
         this.previousMolarFraction2 = i;
     }
 
+    public float[] getSpecies1PlottingValues() {
+        return species1PlottingValues;
+    }
+
+    public float[] getSpecies2PlottingValues() {
+        return species2PlottingValues;
+    }
+
     /* +++++++++++++++ */
 
 

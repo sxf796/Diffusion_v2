@@ -33,6 +33,8 @@ public class AnimationView extends View {
     private float pointSize, lineSize, snapshotSize;
 
     private float[] initialValues, plottingValues, xValues;
+
+
     private ArrayList<SnapShotValues> snapshotValues;
     private int[] colours;
     private int positionInColors, numberOfSnapShots;

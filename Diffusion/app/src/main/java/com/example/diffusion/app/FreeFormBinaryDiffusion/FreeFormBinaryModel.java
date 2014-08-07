@@ -237,3 +237,4 @@ public class FreeFormBinaryModel {
     }//end of restartAnimation method
 
 }//end of Model class
+`

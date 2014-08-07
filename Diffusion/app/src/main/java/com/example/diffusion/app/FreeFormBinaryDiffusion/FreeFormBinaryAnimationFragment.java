@@ -67,7 +67,6 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
     private LinearLayout buttonLayout;
     private SeekBar mTemperatureSeekBar;
 
-    private int temperatureSeekBarValue = 50;
 
     private FreeFormBinaryModel mDiffusionModel;
     private float[] initialValues, xValues, plottingValues;
@@ -78,13 +77,13 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
     private boolean linesOn;
 
     private PlayThread pt;
+    //TODO add in the gif thread here as well
 
     private String boundaryConditions;
     private ArrayList<String> boundaryConditionsArray;
     private int positionInBCArray;
     private double deltaTFactor;
 
-    private ArrayList<Bitmap> bitmapArrayList;
     private boolean creatingGif;
 
     /* Getters/Setters */
@@ -133,13 +132,14 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
             this.animationViewHeight = getArguments().getInt("animation_view_height");
             this.animationViewWidth = getArguments().getInt("animation_view_width");
             this.linesOn = getArguments().getBoolean("animation_lines_on");
+
+
             this.animationPlaying = false;
             this.boundaryConditions = "Constant Value";
             this.deltaTFactor = 0.8;
             this.boundaryConditionsArray = new ArrayList<String>();
             this.boundaryConditionsArray.add("Constant Value"); this.boundaryConditionsArray.add("Zero Flux");
             this.boundaryConditionsArray.add("Periodic"); this.positionInBCArray = 0;
-            this.bitmapArrayList = new ArrayList<Bitmap>();
             this.creatingGif = false;
             //test code below for moving functionality to the action bar
             setHasOptionsMenu(true);
@@ -304,7 +304,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
                 pauseAnimation();
                 break;
 
-            case 89:
+            case 89: //snapshot button (adds lines to the screen)
                 mAnimationView.createSnapShot();
                 break;
 
@@ -317,7 +317,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
      */
     class PlayThread extends Thread { //TODO used for quick navigation
 
-        public Handler handler = new Handler(); //change name to mHandler if this works
+        public Handler handler = new Handler();
 
         public void run() {
 
@@ -336,7 +336,7 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
                                 mAnimationView.setPlottingValues(plottingValues);
                                 mAnimationView.updateView();
 
-                            }
+                            }//end of inner run method
                         });
                         handler.postDelayed(this, 1);
                         break;
@@ -672,52 +672,49 @@ public class FreeFormBinaryAnimationFragment extends Fragment implements View.On
 //        gfycatBuilder.show();
     }//end of finishCreatingGfycatLink method
 
-    class GenerateGfycatLinkThread extends Thread{
-
-        private byte[] byteArray;
-        public GenerateGfycatLinkThread(byte[] array){
-            this.byteArray = array;
-        }
-
-        @Override
-        public void run(){
-
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("https://gifaffe.s3.amazonaws.com/");
-            ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
-
-            list.add(new BasicNameValuePair("key", "SamFarmerTest"));
-            list.add(new BasicNameValuePair("file", byteArray.toString())); //this probably wont work, if it doesnt, dont worry about it
-            list.add(new BasicNameValuePair("acl", "private"));
-            list.add(new BasicNameValuePair("AWSAccessKeyId", "AKIAIT4VU4B7G2LQYKZQ"));
-            list.add(new BasicNameValuePair("policy", "eyAiZXhwaXJhdGlvbiI6ICIyMDIwLTEyLTAxVDEyOjAwOjAwLjAwMFoiLAogICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgeyJidWNrZXQiOiAiZ2lmYWZmZSJ9LAogICAgICAgICAgICBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAiIl0sCiAgICAgICAgICAgIHsiYWNsIjogInByaXZhdGUifSwKCSAgICB7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6ICIyMDAifSwKICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgIiJdLAogICAgICAgICAgICBbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwgMCwgNTI0Mjg4MDAwXQogICAgICAgICAgICBdCiAgICAgICAgICB9"));
-            list.add(new BasicNameValuePair("success_action_status","200"));
-            list.add(new BasicNameValuePair("signature", "mk9t/U/wRN4/uU01mXfeTe2Kcoc="));
-            list.add(new BasicNameValuePair("Content-Type", "image/gif"));
-
-            try{
-                post.setEntity(new UrlEncodedFormEntity(list));
-            }catch(UnsupportedEncodingException e){
-                System.out.println("Exception: " + e);
-            }
-            try {
-                HttpResponse response = client.execute(post);
-                // write response to log
-                Log.d("Http Post Response:", response.toString()); //delete this after testing it
-            } catch (ClientProtocolException e) {
-                // Log exception
-                e.printStackTrace();
-            } catch (IOException e) {
-                // Log exception
-                e.printStackTrace();
-            }
-
-        }//end of run method
-
-    }//end of gfycat thread
-
-
-
+//    class GenerateGfycatLinkThread extends Thread{
+//
+//        private byte[] byteArray;
+//        public GenerateGfycatLinkThread(byte[] array){
+//            this.byteArray = array;
+//        }
+//
+//        @Override
+//        public void run(){
+//
+//            HttpClient client = new DefaultHttpClient();
+//            HttpPost post = new HttpPost("https://gifaffe.s3.amazonaws.com/");
+//            ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
+//
+//            list.add(new BasicNameValuePair("key", "SamFarmerTest"));
+//            list.add(new BasicNameValuePair("file", byteArray.toString())); //this probably wont work, if it doesnt, dont worry about it
+//            list.add(new BasicNameValuePair("acl", "private"));
+//            list.add(new BasicNameValuePair("AWSAccessKeyId", "AKIAIT4VU4B7G2LQYKZQ"));
+//            list.add(new BasicNameValuePair("policy", "eyAiZXhwaXJhdGlvbiI6ICIyMDIwLTEyLTAxVDEyOjAwOjAwLjAwMFoiLAogICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgeyJidWNrZXQiOiAiZ2lmYWZmZSJ9LAogICAgICAgICAgICBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAiIl0sCiAgICAgICAgICAgIHsiYWNsIjogInByaXZhdGUifSwKCSAgICB7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6ICIyMDAifSwKICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgIiJdLAogICAgICAgICAgICBbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwgMCwgNTI0Mjg4MDAwXQogICAgICAgICAgICBdCiAgICAgICAgICB9"));
+//            list.add(new BasicNameValuePair("success_action_status","200"));
+//            list.add(new BasicNameValuePair("signature", "mk9t/U/wRN4/uU01mXfeTe2Kcoc="));
+//            list.add(new BasicNameValuePair("Content-Type", "image/gif"));
+//
+//            try{
+//                post.setEntity(new UrlEncodedFormEntity(list));
+//            }catch(UnsupportedEncodingException e){
+//                System.out.println("Exception: " + e);
+//            }
+//            try {
+//                HttpResponse response = client.execute(post);
+//                // write response to log
+//                Log.d("Http Post Response:", response.toString()); //delete this after testing it
+//            } catch (ClientProtocolException e) {
+//                // Log exception
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                // Log exception
+//                e.printStackTrace();
+//            }
+//
+//        }//end of run method
+//
+//    }//end of gfycat thread
 
     /*
      * Inner class - test thread used for creating the gif, and storing it on the device
