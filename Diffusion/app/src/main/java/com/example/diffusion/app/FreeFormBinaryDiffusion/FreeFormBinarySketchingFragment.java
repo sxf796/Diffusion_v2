@@ -36,14 +36,14 @@ public class FreeFormBinarySketchingFragment extends Fragment implements View.On
     private ToggleButton mToggleLinesButton, mInterpolateButton;
     private int numberOfGridPoints = 20; //set initially
     private SketchingDataPoints[] dataPointArray;
-    private SketchFragmentListener mSketchFragmentListener;
+    private BinarySketchFragmentListener mBinarySketchFragmentListener;
     private boolean linesOn;
 
-    public interface SketchFragmentListener {
-        public void animateValues(float[] initialValues, float[] xValues,
-                                  int sketchAreaHeight, int sketchAreaWidth,
-                                  boolean linesOn);
-        public void loadAnimationFragment(String filename);
+    public interface BinarySketchFragmentListener {
+        public void binaryAnimateValues(float[] initialValues, float[] xValues,
+                                        int sketchAreaHeight, int sketchAreaWidth,
+                                        boolean linesOn);
+        public void loadBinaryAnimationFragment(String filename);
     }//end of interface
 
 
@@ -65,7 +65,7 @@ public class FreeFormBinarySketchingFragment extends Fragment implements View.On
     public void onAttach(Activity act){
         super.onAttach(act);
         try{
-            mSketchFragmentListener = (SketchFragmentListener) act;
+            mBinarySketchFragmentListener = (BinarySketchFragmentListener) act;
          }catch (ClassCastException e){
             System.out.println("Activity hasn't implemented the listener yet");
         }
@@ -157,9 +157,9 @@ public class FreeFormBinarySketchingFragment extends Fragment implements View.On
                     initialValues[i] = dataPointArray[i].getYPosition();
                 }//end of for loop
 
-                mSketchFragmentListener.animateValues(initialValues, xValues,
-                                                        sketchViewHeight, sketchAreaWidth,
-                                                        linesOn);
+                mBinarySketchFragmentListener.binaryAnimateValues(initialValues, xValues,
+                        sketchViewHeight, sketchAreaWidth,
+                        linesOn);
                 break;
 
             case R.id.toggle_lines_btn:
@@ -204,7 +204,7 @@ public class FreeFormBinarySketchingFragment extends Fragment implements View.On
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //load the animation activity from in here with the selected string
                         String filename = spinner.getSelectedItem().toString();
-                        mSketchFragmentListener.loadAnimationFragment(filename);
+                        mBinarySketchFragmentListener.loadBinaryAnimationFragment(filename);
                     }
                 });
 

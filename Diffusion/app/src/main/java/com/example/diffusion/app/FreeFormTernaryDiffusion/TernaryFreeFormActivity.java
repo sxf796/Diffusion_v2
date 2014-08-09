@@ -2,6 +2,7 @@ package com.example.diffusion.app.FreeFormTernaryDiffusion;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -11,7 +12,8 @@ import com.example.diffusion.app.R;
 /*
  * Activity which handles the fragments associated with ternary free form diffusion
  */
-public class TernaryFreeFormActivity extends FragmentActivity {
+public class TernaryFreeFormActivity extends FragmentActivity
+                    implements TernarySketchingFragment.TernarySketchingListener{
 
     private TernarySketchingFragment mTernarySketchingFragment;
 
@@ -53,5 +55,20 @@ public class TernaryFreeFormActivity extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /* Method needed for the Ternary Sketching Fragment  */
+    public void loadTernaryAnimation(float[] species1Values, float[] species2Values, float[] xValues, int height, int width){
+
+        LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainerTernary);
+        LinearLayout ll = new LinearLayout(this); ll.setId(12345);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(ll.getId(), TernaryFreeFormAnimationFragment.newInstance(species1Values, species2Values, xValues, height, width), "Ternary_animation_tag");
+        ft.addToBackStack(null);
+
+        ft.commit();
+        fragmentContainer.addView(ll);
+
+    }//end of loadTernaryAnimation Button
 
 }//end of class

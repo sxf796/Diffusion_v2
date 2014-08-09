@@ -65,6 +65,12 @@
 
         </RadioGroup>
 
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:id="@+id/ternary_sketching_animate_values"
+            android:text="Animate"/>
+
 
     </LinearLayout>
 

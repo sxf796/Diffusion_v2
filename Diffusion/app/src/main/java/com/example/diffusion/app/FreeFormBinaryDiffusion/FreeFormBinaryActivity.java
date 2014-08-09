@@ -3,7 +3,6 @@ package com.example.diffusion.app.FreeFormBinaryDiffusion;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -11,7 +10,7 @@ import android.widget.LinearLayout;
 import com.example.diffusion.app.R;
 
 public class FreeFormBinaryActivity extends FragmentActivity
-    implements FreeFormBinarySketchingFragment.SketchFragmentListener
+    implements FreeFormBinarySketchingFragment.BinarySketchFragmentListener
              {
 
     private FreeFormBinarySketchingFragment sketchingFragment;
@@ -65,9 +64,9 @@ public class FreeFormBinaryActivity extends FragmentActivity
      *
      * Moves to the Animation Fragment, and passes the to ar
      */
-    public void animateValues(float[] initialValues, float[] xValues,
-                                int sketchAreaHeight, int sketchAreaWidth,
-                                boolean linesOn){
+    public void binaryAnimateValues(float[] initialValues, float[] xValues,
+                                    int sketchAreaHeight, int sketchAreaWidth,
+                                    boolean linesOn){
 
         LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragContainer);
         LinearLayout ll = new LinearLayout(this); ll.setId(12345);
@@ -81,13 +80,13 @@ public class FreeFormBinaryActivity extends FragmentActivity
         fragmentContainer.addView(ll);
 
 
-    }//end of animateValues method
+    }//end of binaryAnimateValues method
 
 
 
     /* Called from sketching fragment, when loading a previous value */
     @Override
-    public void loadAnimationFragment(String filename){
+    public void loadBinaryAnimationFragment(String filename){
 
         //get the rest of the information from the database regarding the filename
         FreeFormValuesDataBaseHandler db = new FreeFormValuesDataBaseHandler(this);
@@ -129,14 +128,9 @@ public class FreeFormBinaryActivity extends FragmentActivity
 
         }//end of if statement
 
-    }//end of loadAnimationFragment
-
-    /* Test method for adding things to the action bar */
-    public void setUpActionBar(){
+    }//end of loadBinaryAnimationFragment
 
 
-
-    }//end of setUpActionBar method
 
 }//end of Activity class
 

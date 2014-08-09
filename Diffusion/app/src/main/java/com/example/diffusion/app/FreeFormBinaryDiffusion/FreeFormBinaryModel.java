@@ -125,7 +125,7 @@ public class FreeFormBinaryModel {
 
     /*
      * Takes into account the boundary conditions, and sets up the array of SketchingDataPoints that will be used
-
+     *
      */
     public void setUpSolutionArray(){
 
@@ -237,4 +237,3 @@ public class FreeFormBinaryModel {
     }//end of restartAnimation method
 
 }//end of Model class
-`

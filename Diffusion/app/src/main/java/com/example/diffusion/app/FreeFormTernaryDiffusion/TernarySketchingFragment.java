@@ -24,13 +24,20 @@ public class TernarySketchingFragment extends Fragment implements View.OnClickLi
 
     /* Instance Variables */
     private TernaryFreeFormSketchingView mTernaryFreeFormSketchingView;
-    private Button mRedRefreshButton, mBlueRefreshButton, mRefreshAllButton;
+    private Button mRedRefreshButton, mBlueRefreshButton, mRefreshAllButton, mAnimateButton;
     private RadioGroup mColourSelectionRadioGroup;
     private RadioButton mRedRadioButton, mBlueRadioButton;
-    private int numberOfGridPoints = 35;
+    private int numberOfGridPoints = 10;
     private SketchingDataPoints[] mFirstSketchingDataPointArray, mSecondSketchingDataPointArray;
+    private TernarySketchingListener mTernarySketchingListener;
 
-    //will need to add in a listener for communication with the activity in the future as well
+
+    public interface TernarySketchingListener{
+
+        public void loadTernaryAnimation(float[] species1Values, float[] species2Values, float[] xValues, int animationViewHeight,
+                                         int animationViewWidth);
+
+    }//end of interface
 
     /**
      * Static method for creating a new instance of the sketching fragment
@@ -66,6 +73,8 @@ public class TernarySketchingFragment extends Fragment implements View.OnClickLi
         mTernaryFreeFormSketchingView.getLayoutParams().width = ((int)(750/this.numberOfGridPoints))*this.numberOfGridPoints;
         mTernaryFreeFormSketchingView.setNumberOfGridPoints(this.numberOfGridPoints);
 
+
+        //if the SketchingDataPoint arrays are not null, e.g. on a reattach, recreate them in the sketching view
         if(this.mFirstSketchingDataPointArray!=null){
             mTernaryFreeFormSketchingView.setBlueDataPointArray(Arrays.copyOf(mFirstSketchingDataPointArray, mFirstSketchingDataPointArray.length));
         }
@@ -108,6 +117,9 @@ public class TernarySketchingFragment extends Fragment implements View.OnClickLi
 
         mBlueRadioButton.setChecked(true); mRedRadioButton.setChecked(false);
 
+        mAnimateButton = (Button) v.findViewById(R.id.ternary_sketching_animate_values);
+        mAnimateButton.setOnClickListener(this);
+
       return v;
 
     }//end of onCreateView method
@@ -117,6 +129,11 @@ public class TernarySketchingFragment extends Fragment implements View.OnClickLi
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try{
+            mTernarySketchingListener = (TernarySketchingListener) activity;
+        } catch(ClassCastException e){
+            System.out.println("Activity hasn't implemented the listener yet");
+        }
 
     }//end of onAttach method
 
@@ -143,9 +160,37 @@ public class TernarySketchingFragment extends Fragment implements View.OnClickLi
                 mTernaryFreeFormSketchingView.resetBothArrays();
                 break;
 
+            case R.id.ternary_sketching_animate_values:
+                startAnimation();
+                break;
+
         }//end of switch statement
 
     }//end of onClick method
 
+    /* Called when the animation button is pressed  */
+    public void startAnimation(){
+
+        float[] species1Values = new float[numberOfGridPoints];
+        float[] species2Values = new float[numberOfGridPoints];
+        float[] xValues = new float[numberOfGridPoints];
+
+        mFirstSketchingDataPointArray = mTernaryFreeFormSketchingView.getBlueDataPointArray();
+        mSecondSketchingDataPointArray = mTernaryFreeFormSketchingView.getRedDataPointArray();
+
+
+        //populate the arrays that are needed by the animation view
+        for(int i=0; i<mFirstSketchingDataPointArray.length; i++){
+
+            xValues[i] = mFirstSketchingDataPointArray[i].getMidX();
+            species1Values[i] = mFirstSketchingDataPointArray[i].getYPosition();
+            species2Values[i] = mSecondSketchingDataPointArray[i].getYPosition();
+
+        }//end of for loop
+
+        mTernarySketchingListener.loadTernaryAnimation(species1Values, species2Values, xValues,
+                            mTernaryFreeFormSketchingView.getHeight(), mTernaryFreeFormSketchingView.getWidth());
+
+    }//end of start animation
 
 }//end of fragment class

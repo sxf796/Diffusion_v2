@@ -78,7 +78,7 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
             this.animationViewWidth = getArguments().getInt("animation_view_width");
 
             this.animationPlaying = false;
-            this.boundaryConditions = "Zero Flux";
+            this.boundaryConditions = "Constant Value";
         }//end of if statement
     }//end of onCreate method
 
@@ -90,11 +90,15 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
         View v = inflater.inflate(R.layout.fragment_ternary_free_form_animation, container, false);
 
         mTernaryAnimationView = (TernaryAnimationView) v.findViewById(R.id.ternary_animation_view);
+        mTernaryAnimationView.getLayoutParams().height = this.animationViewHeight;
+        mTernaryAnimationView.getLayoutParams().width = this.animationViewWidth;
         mTernaryAnimationView.setSpecies1InitialValues(Arrays.copyOf(species1InitialValues, species1InitialValues.length));
         mTernaryAnimationView.setSpecies1PlottingValues(Arrays.copyOf(species1InitialValues, species1InitialValues.length));
         mTernaryAnimationView.setSpecies2InitialValues(Arrays.copyOf(species2InitialValues, species2InitialValues.length));
         mTernaryAnimationView.setSpecies2PlottingValues(Arrays.copyOf(species2InitialValues, species2InitialValues.length));
+        mTernaryAnimationView.setXValues(xValues);
 
+        mTernaryFreeFormModel = new TernaryFreeFormModel(species1PlottingValues, species2InitialValues, animationViewHeight);
 
         mPlayButton = (Button) v.findViewById(R.id.ternary_animation_play);
         mPlayButton.setOnClickListener(this);
@@ -125,7 +129,6 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
 
         }//end of switch statement
 
-
     }//end of onClick method
 
 
@@ -145,15 +148,33 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
     @Override
     public void onDetach() {
         super.onDetach();
-    }
+        playingOrPaused = 0;
+        animationPlaying = false;
+    }//end of onDetach method
 
     public void playAnimation(){
 
-        animationPlaying = false;
+        this.animationPlaying = true;
         playingOrPaused = 1;
         pt = new PlayThread();
         pt.start();
-
+//        mTernaryFreeFormModel.solutionOneStep();
+//        species1PlottingValues = mTernaryFreeFormModel.getSpecies1PlottingValues();
+//        species2PlottingValues = mTernaryFreeFormModel.getSpecies2PlottingValues();
+//        mTernaryAnimationView.setSpecies1PlottingValues(species1PlottingValues);
+//        mTernaryAnimationView.setSpecies2PlottingValues(species2PlottingValues);
+//        mTernaryAnimationView.updateView();
+//        String spec1 = "[";
+//        for(int i=0; i<species1PlottingValues.length; i++){
+//            spec1 += species1PlottingValues[i] + ",";
+//        } spec1 += "]";
+//        System.out.println("spec1: " + spec1);
+//        String spec2="[";
+//        for(int i=0; i<species2PlottingValues.length; i++){
+//            spec2 += species2PlottingValues[i] + ",";
+//        } spec2 += "]\n";
+//
+//        System.out.println("spec2: "+spec2);
     }//end of playAnimation method
 
     public void pauseAnimation(){
@@ -167,6 +188,15 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
     }//end of pauseAnimation method
 
     public void restartAnimation(){
+
+        if(animationPlaying){
+
+            animationPlaying = false;
+            pt = null;
+            mTernaryAnimationView.restartAnimation();
+            mTernaryFreeFormModel.restartAnimation();
+
+        }//end of if statement
 
     }//end of restartAnimation method
 
@@ -195,13 +225,14 @@ public class TernaryFreeFormAnimationFragment extends Fragment implements View.O
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                System.out.println("***** animation updating *****");
                                 mTernaryAnimationView.setSpecies1PlottingValues(species1PlottingValues);
                                 mTernaryAnimationView.setSpecies2PlottingValues(species2PlottingValues);
                                 mTernaryAnimationView.updateView();
 
                             }//end of inner run method
                         });
+                        handler.postDelayed(this, 1);
                         break;
 
                 }//end of switch statement

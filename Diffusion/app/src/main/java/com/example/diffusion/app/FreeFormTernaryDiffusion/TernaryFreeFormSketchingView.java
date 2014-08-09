@@ -105,7 +105,8 @@ public class TernaryFreeFormSketchingView extends View {
         this.redDataPointArray = array;
     }
 
-
+    public SketchingDataPoints[] getBlueDataPointArray(){ return this.blueDataPointArray; }
+    public SketchingDataPoints[] getRedDataPointArray(){ return this.redDataPointArray; }
 
     /* Override methods for the View Class */
 
@@ -234,8 +235,6 @@ public class TernaryFreeFormSketchingView extends View {
 
     /* Helper method for the onTouch event - adds new input to screen */
     public void addToScreen(float x, float y){
-
-        System.out.println("ADD TO SCREEN METHOD REACHED");
 
         //find out which point of the screen the x and y positions belong to:
         SketchingDataPoints d;

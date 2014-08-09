@@ -97,9 +97,9 @@ public class TernaryAnimationView extends View {
         //add in the stuff about lines tomorrow after points working
         for(int i=0; i<species1PlottingValues.length; i++){
 
-            canvas.drawPoint(species1PlottingValues[i], xValues[i], sketchingPaint);
+            canvas.drawPoint( xValues[i],species1PlottingValues[i], sketchingPaint);
             sketchingPaint.setColor(Color.RED);
-            canvas.drawPoint(species2PlottingValues[i], xValues[i], sketchingPaint);
+            canvas.drawPoint( xValues[i],species2PlottingValues[i], sketchingPaint);
             sketchingPaint.setColor(Color.BLUE);
 
         }//end of for loop

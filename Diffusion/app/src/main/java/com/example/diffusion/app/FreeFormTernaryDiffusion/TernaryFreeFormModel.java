@@ -38,22 +38,27 @@ public class TernaryFreeFormModel {
     /* Constructor */
     public TernaryFreeFormModel(float[] values1, float[] values2, int viewHeight){
 
-        this.species1InitialValues = values1;
-        this.species2InitialValues = values2;
+        this.species1PlottingValues = values1;
+        this.species2PlottingValues = values2;
         this.viewHeight = viewHeight;
         this.totalNumberOfParticles = viewHeight*2;
-        this.molarFractionArrayLengths = species1InitialValues.length + 2;
+        this.molarFractionArrayLengths = species1PlottingValues.length + 2;
+        this.boundaryConditions = "Constant Value";
 
-        setUpSolutionArrays();
+        System.out.println("******** number of particles: " + totalNumberOfParticles + " *************");
 
-        this.l12 = 2000.0; this.l13 = 2000.0; this.l23 = -2000.0;
+
+        this.species1InitialValues = Arrays.copyOf(species1PlottingValues, species1PlottingValues.length);
+        this.species2InitialValues = Arrays.copyOf(species2PlottingValues, species2PlottingValues.length);
+
+        this.l12 = -1000.0; this.l13 = -1000.0; this.l23 = -1000.0;
         this.temperature = 100;
         this.m1 = 1.0; this.m2 = 1.0;
 
         this.deltaX = 0.125;
-        this.deltaT = 0.00000045;
+        this.deltaT = 0.00000045d;
 
-        this.boundaryConditions = "Zero Flux";
+        setUpSolutionArrays();
 
     } //end of constructor
 
@@ -68,14 +73,12 @@ public class TernaryFreeFormModel {
         this.species1ChemicalPotential = new double[molarFractionArrayLengths];
         this.species2ChemicalPotential = new double[molarFractionArrayLengths];
 
-        this.species1PlottingValues = Arrays.copyOf(species1InitialValues, species1InitialValues.length);
-        this.species2PlottingValues = Arrays.copyOf(species2InitialValues, species2InitialValues.length);
-
         //fill the arrays with the initial values
-        for(int i=0; i< species1InitialValues.length; i++){
+        for(int i=0; i< species1PlottingValues.length; i++){
 
-            double x1 = species1InitialValues[i]/totalNumberOfParticles;
-            double x2 = species2InitialValues[i]/totalNumberOfParticles;
+            //TODO change this for now to see the effect
+            double x1 = (viewHeight - species1PlottingValues[i])/totalNumberOfParticles;
+            double x2 = (viewHeight - species2PlottingValues[i])/totalNumberOfParticles;
             double x3 = 1 - (x1 + x2);
 
             species1MolarFractions[i+1] = x1;
@@ -85,13 +88,13 @@ public class TernaryFreeFormModel {
         }//end of for loop
 
         //add the boundary conditions
-        if(this.boundaryConditions.equals("Zero Flux")){
+        if(boundaryConditions.equals("Constant Value")){ //change to constant value for now
 
             species1MolarFractions[0] = species1MolarFractions[1];
             species1MolarFractions[molarFractionArrayLengths-1] = species1MolarFractions[molarFractionArrayLengths-2];
 
             species2MolarFractions[0] = species2MolarFractions [1];
-            species1MolarFractions[molarFractionArrayLengths-1] = species2MolarFractions[molarFractionArrayLengths-2];
+            species2MolarFractions[molarFractionArrayLengths-1] = species2MolarFractions[molarFractionArrayLengths-2];
 
             species3MolarFractions[0] = species3MolarFractions[1];
             species3MolarFractions[molarFractionArrayLengths-1] = species3MolarFractions[molarFractionArrayLengths-2];
@@ -129,17 +132,24 @@ public class TernaryFreeFormModel {
     /* Updates all values in the arrays for one time step */
     public void solutionOneStep(){
 
+        System.out.println("solution model one step has been called");
+
         double RT = 8.31541 * temperature;
 
         //first update the chemical potential arrays to hold the correct values
-        for(int i=0; i<species1ChemicalPotential.length; i++){
+        for(int i=1; i<species1ChemicalPotential.length-1; i++){
 
             double x1 = species1MolarFractions[i]; double x2 = species2MolarFractions[i]; double x3 = species3MolarFractions[i];
+
+            //need to stop the values becoming negative
+            if(x1<=0)x1=0.1; if(x2<=0)x2=0.1; if(x3<=0)x3=0.1;
+
 
             species1ChemicalPotential[i] = (RT*x1*Math.log(x1)) + (x2*(x2+x3)*l12) + (x3*(x2+x3)*l13) - (x2*x3*l23);
             species2ChemicalPotential[i] = (RT*x2*Math.log(x2)) + (x1*(x1+x3)*l12) - (x1*x3*l13) + (x3*(x1+x3)*l23);
 
         }//end of for loop
+
 
         //then update the molar fraction arrays
         for(int i=1; i<species1ChemicalPotential.length-1; i++){
@@ -156,13 +166,21 @@ public class TernaryFreeFormModel {
 
             double currentValue2 = species2MolarFractions[i];
 
-            species2MolarFractions[i] = currentValue2 + (m2*deltaT)*(((species2MolarFractions[i+1]+currentValue2)/2)*((species2ChemicalPotential[i+1]-species2ChemicalPotential[i])/(deltaX*deltaX))
+           species2MolarFractions[i] = currentValue2 + (m2*deltaT)*(((species2MolarFractions[i+1]+currentValue2)/2)*((species2ChemicalPotential[i+1]-species2ChemicalPotential[i])/(deltaX*deltaX))
                                                                     - ((currentValue2 + previousMolarFraction2)/2)*((species2ChemicalPotential[i]-species2ChemicalPotential[i-1])/(deltaX*deltaX)));
 
             setPreviousMolarFraction2(placeHolderPrevious2);
 
+            //need to update the species three molar values
+
         }//end of for loop
 
+        //test updating of the 3 - quick fix then comment out
+        for(int i=0; i<species3MolarFractions.length; i++){
+
+            species3MolarFractions[i] = 1 - (species1MolarFractions[i] + species2MolarFractions[i]);
+
+        }//end of for loop
 
         //update the boundary conditions
         if(boundaryConditions.equals("Zero Flux")){
@@ -171,26 +189,27 @@ public class TernaryFreeFormModel {
             species1MolarFractions[molarFractionArrayLengths-1] = species1MolarFractions[molarFractionArrayLengths-2];
 
             species2MolarFractions[0] = species2MolarFractions [1];
-            species1MolarFractions[molarFractionArrayLengths-1] = species2MolarFractions[molarFractionArrayLengths-2];
+            species2MolarFractions[molarFractionArrayLengths-1] = species2MolarFractions[molarFractionArrayLengths-2];
 
             species3MolarFractions[0] = species3MolarFractions[1];
             species3MolarFractions[molarFractionArrayLengths-1] = species3MolarFractions[molarFractionArrayLengths-2];
 
-        }else{
-            //other boundary conditions will go in here
+        }else if(boundaryConditions.equals("Constant Value")){
+            //constant value boundary conditions do not get updated during the run through the solution
         }//end of if/else boundary condition block
 
         //call method to set values that will be plotted
         setPlottingValues();
-
+        printAllValues(); //call method that is used for debugging
     }//end of solutionOneStep method
 
     public void setPlottingValues(){
 
         for(int i=0; i<species1PlottingValues.length; i++){
 
-            species1PlottingValues[i] = (float)(species1MolarFractions[i+1]/totalNumberOfParticles);
-            species2PlottingValues[i] = (float)(species2MolarFractions[i+1]/totalNumberOfParticles);
+            //TODO the below will need changing i think
+            species1PlottingValues[i] = viewHeight - ((float)(species1MolarFractions[i+1]*totalNumberOfParticles));
+            species2PlottingValues[i] = viewHeight - ((float)(species2MolarFractions[i+1]*totalNumberOfParticles));
 
         }//end of for loop
 
@@ -199,6 +218,33 @@ public class TernaryFreeFormModel {
     /* Called when the animation reset button is pressed */
     public void restartAnimation(){
 
+
     }//end of restartAnimation method
+
+
+    /* Print method used for debugging */
+    public void printAllValues(){
+
+        //print out the molar fractions
+        String spec1 = "Spec1: [";
+        for(int i=0; i<species1MolarFractions.length; i++){
+            spec1+= species1MolarFractions[i] + ", ";
+        } spec1 += "]";
+        System.out.println(spec1);
+
+        String spec2 = "Spec2: [";
+        for(int i=0; i<species2MolarFractions.length; i++){
+            spec2+= species2MolarFractions[i] + ", ";
+        } spec2 += "]";
+        System.out.println(spec2);
+
+        String spec3 = "Spec3: [";
+        for(int i=0; i<species3MolarFractions.length; i++){
+            spec3+= species3MolarFractions[i] + ", ";
+        } spec3 += "]";
+        System.out.println(spec3);
+
+    }//end of printAllValues method
+
 
 }//end of model class
