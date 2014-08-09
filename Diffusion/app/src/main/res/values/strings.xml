@@ -19,5 +19,6 @@
 
     <string name="boundary_prompt">Choose a Boundary Condition</string>
     <string name="title_activity_ternary_free_form">TernaryFreeFormActivity</string>
+    <string name="title_activity_practice_graph">PracticeGraphActivity</string>
 
 </resources>

@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import com.example.diffusion.app.FreeFormBinaryDiffusion.FreeFormBinaryActivity;
 import com.example.diffusion.app.FreeFormTernaryDiffusion.TernaryFreeFormActivity;
+import com.example.diffusion.app.PracticeSection.PracticeGraphActivity;
 
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
     /* Instance Variables */
     private TextView homeScreenTextView;
-    private Button binaryDiffusionButton, ternaryDiffusionButton;
+    private Button binaryDiffusionButton, ternaryDiffusionButton, practiceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         ternaryDiffusionButton = (Button) findViewById(R.id.ternary_diff_btn);
         ternaryDiffusionButton.setOnClickListener(this);
+
+        practiceButton = (Button) findViewById(R.id.practice_btn);
+        practiceButton.setOnClickListener(this);
+
 
     }//end of onCreate method
 
@@ -71,6 +76,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.ternary_diff_btn:
                 Intent intent2 = new Intent(this, TernaryFreeFormActivity.class);
                 startActivity(intent2);
+                break;
+
+            case R.id.practice_btn:
+                Intent intent3 = new Intent(this, PracticeGraphActivity.class);
+                startActivity(intent3);
                 break;
 
         }//end of switch statement

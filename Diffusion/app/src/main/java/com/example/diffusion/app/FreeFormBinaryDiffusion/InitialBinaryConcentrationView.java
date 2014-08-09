@@ -74,6 +74,7 @@ public class InitialBinaryConcentrationView extends View  {
         sketchPaint.setStrokeCap(Paint.Cap.ROUND);
 
         canvasPaint = new Paint(Paint.DITHER_FLAG); //used for painting the grid
+        //add in the above for the canvas paint as well i think
 
         //set the properties for the grid
         lineColour = -7829368;

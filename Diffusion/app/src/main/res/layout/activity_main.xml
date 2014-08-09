@@ -49,6 +49,17 @@
                android:onClick="onClick"
                />
 
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/practice_btn"
+               android:text="Practice"
+               android:layout_marginRight="83dp"
+               android:layout_centerVertical="true"
+               android:layout_toLeftOf="@+id/homeScreenTextView"
+               android:onClick="onClick"
+               />
+
 
        </LinearLayout>
 
