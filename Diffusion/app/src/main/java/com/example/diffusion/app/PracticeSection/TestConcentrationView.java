@@ -172,13 +172,20 @@ public class TestConcentrationView extends View{
         }//end of for loop for drawing points
 
         //add the text to the axis
-        canvas.save(); //test deleting this to see if it makes any different
+        axisPaint.setStrokeWidth(0.65f);
         canvas.drawText("Grid Points", maxXPosition-50, maxYPosition+25, axisPaint);
-        canvas.rotate(-90);
-        canvas.drawText("Concentration", 0, 0, axisPaint);
+        canvas.save(); //test deleting this to see if it makes any different
+        canvas.rotate(270);
+        canvas.drawText("Concentration", -120, 25, axisPaint);
+//        canvas.drawPoint(-80,20, sketchPaint);
         canvas.restore();
+        axisPaint.setStrokeWidth(axisLineSize);
 
-
+        //add the little arrows to the end of the graph
+        canvas.drawLine(minXPosition, minYPosition, minXPosition+10, minYPosition+10, axisPaint);
+        canvas.drawLine(minXPosition, minYPosition, minXPosition-10, minYPosition+10, axisPaint);
+        canvas.drawLine(maxXPosition, maxYPosition, maxXPosition-10, maxYPosition-10, axisPaint);
+        canvas.drawLine(maxXPosition, maxYPosition, maxXPosition-10, maxYPosition+10, axisPaint);
 
     }//end of onDraw method
 
